@@ -1,9 +1,14 @@
 TEMPLATE = lib
 CONFIG += c++11
-CONFIG += dynamiclib
+CONFIG += dll
 CONFIG -= qt
 
 DEFINES += BITGRABBER_EXPORT
+
+win32
+{
+    DLLDESTDIR = $$PWD/../build/cli
+}
 
 SOURCES += \
         BitGrabber.cpp \
