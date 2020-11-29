@@ -7,7 +7,9 @@ DEFINES += BITGRABBER_EXPORT
 
 win32
 {
-    DLLDESTDIR = $$PWD/../build/cli
+    CONFIG(debug, debug|release): dllcopydir = $$OUT_PWD/../cli/debug
+    else: dllcopydir = $$OUT_PWD/../cli/release
+    DLLDESTDIR = $$dllcopydir
 }
 
 SOURCES += \
