@@ -3,7 +3,9 @@ CONFIG += c++11
 CONFIG += dll
 CONFIG -= qt
 
-DEFINES += BITGRABBER_EXPORT
+DEFINES += \
+           BITGRABBER_EXPORT \
+           _CRT_SECURE_NO_WARNINGS
 
 win32
 {
@@ -14,11 +16,13 @@ win32
 
 SOURCES += \
         BitGrabber.cpp \
+        DataPosition.cpp \
         FileEntry.cpp \
         StringGrabber.cpp
 
 HEADERS += \
     BitGrabber.h \
+    DataPosition.h \
     DllExports.h \
     EndianConverter.h \
     FileEntry.h \

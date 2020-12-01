@@ -1,5 +1,6 @@
 #include <BitGrabber.h>
 #include <StringGrabber.h>
+#include <QFont>
 #include "FileEntryTableModel.h"
 
 static char *FillTheFile()
@@ -39,27 +40,33 @@ FileEntryTableModel::FileEntryTableModel(QObject *parent)
     StringGrabber sg;
     uint32_t i = 0;
     char *buf = FillTheFile();
-    auto ext = FileEntry("Extension", sg.GetString(buf, i));
+    DataPosition pos = {4, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto ext = FileEntry("Extension", pos, sg.GetString(buf, i));
     FileDataList.Entries.push_back(ext);
-    i += (strlen(buf + i) + 1) * BYTES_TO_BITS;
 
-    auto ver = FileEntry("Version", bg.GrabU32(buf, i, 4 * BYTES_TO_BITS), EntryType::Unsigned32);
+    i += (strlen(buf + i) + 1) * BYTES_TO_BITS;
+    pos = {i, DataLengthUnit::InBits, 4, DataLengthUnit::InBytes};
+    auto ver = FileEntry("Version", pos, bg.GrabU32(buf, pos), EntryType::Unsigned32);
     FileDataList.Entries.push_back(ver);
     i += 4 * BYTES_TO_BITS;
 
-    auto cnt = FileEntry("FileCount", bg.GrabU8(buf, i, 5), EntryType::Unsigned8);
+    pos = {i, DataLengthUnit::InBits, 5, DataLengthUnit::InBits};
+    auto cnt = FileEntry("FileCount", pos, bg.GrabU8(buf, pos), EntryType::Unsigned8);
     FileDataList.Entries.push_back(cnt);
     i += BYTES_TO_BITS;
 
-    auto fl1 = FileEntry("File1", sg.GetString(buf, i / BYTES_TO_BITS));
+    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto fl1 = FileEntry("File1", pos, sg.GetString(buf, i / BYTES_TO_BITS));
     FileDataList.Entries.push_back(fl1);
     i += (fl1.GetStringValue().length() + 1) * BYTES_TO_BITS;
 
-    auto fl2 = FileEntry("File2", sg.GetString(buf, i / BYTES_TO_BITS));
+    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto fl2 = FileEntry("File2", pos, sg.GetString(buf, i / BYTES_TO_BITS));
     FileDataList.Entries.push_back(fl2);
     i += (fl2.GetStringValue().length() + 1) * BYTES_TO_BITS;
 
-    auto fl3 = FileEntry("File3", sg.GetString(buf, i / BYTES_TO_BITS));
+    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto fl3 = FileEntry("File3", pos, sg.GetString(buf, i / BYTES_TO_BITS));
     FileDataList.Entries.push_back(fl3);
     i += (fl3.GetStringValue().length() + 1) * BYTES_TO_BITS;
 }
@@ -125,7 +132,8 @@ QVariant FileEntryTableModel::headerData(int section, Qt::Orientation orientatio
 
 void FileEntryTableModel::addNewItem(QString &name)
 {
-    FileEntry fe(name.toStdString());
+    DataPosition pos;
+    FileEntry fe(name.toStdString(), pos);
     emit layoutAboutToBeChanged();
     FileDataList.Entries.push_back(fe);
     emit layoutChanged();
@@ -172,28 +180,28 @@ QString FileEntryTableModel::getFileEntryType(uint32_t idx) const
         switch (fe.GetType())
         {
         case EntryType::Signed8:
-            ret = "8 Bit Signed Number";
+            ret = "INT8";
             break;
         case EntryType::Signed16:
-            ret = "16 Bit Signed Number";
+            ret = "INT16";
             break;
         case EntryType::Signed32:
-            ret = "32 Bit Signed Number";
+            ret = "INT32";
             break;
         case EntryType::Signed64:
-            ret = "64 Bit Signed Number";
+            ret = "INT64";
             break;
         case EntryType::Unsigned8:
-            ret = "8 Bit Unsigned Number";
+            ret = "UINT8";
             break;
         case EntryType::Unsigned16:
-            ret = "16 Bit Unsigned Number";
+            ret = "UINT16";
             break;
         case EntryType::Unsigned32:
-            ret = "32 Bit Unsigned Number";
+            ret = "UINT32";
             break;
         case EntryType::Unsigned64:
-            ret = "64 Bit Unsigned Number";
+            ret = "UINT64";
             break;
         case EntryType::Pointer:
             ret = "Pointer";

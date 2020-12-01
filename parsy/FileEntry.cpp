@@ -1,24 +1,24 @@
 #include "FileEntry.h"
 
-FileEntry::FileEntry(std::string name) :
-	Name(name)
+FileEntry::FileEntry(std::string name, DataPosition pos) :
+    Name(name), Position(pos)
 {
 }
 
-FileEntry::FileEntry(std::string name, EntryType type) :
-	Name(name)
+FileEntry::FileEntry(std::string name, DataPosition pos, EntryType type) :
+    Name(name), Position(pos)
 {
 	Value.Type = type;
 }
 
-FileEntry::FileEntry(std::string name, std::string value) :
-	Name(name)
+FileEntry::FileEntry(std::string name, DataPosition pos, std::string value) :
+    Name(name), Position(pos)
 {
 	SetStringValue(value);
 }
 
-FileEntry::FileEntry(std::string name, uint64_t value, EntryType type) :
-	Name(name)
+FileEntry::FileEntry(std::string name, DataPosition pos, uint64_t value, EntryType type) :
+    Name(name), Position(pos)
 {
 	Value.Type = type;
 	SetNumericValue(value);

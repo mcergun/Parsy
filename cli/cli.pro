@@ -10,6 +10,8 @@ else:unix: LIBS += -L$$OUT_PWD/../parsy/ -lparsy
 INCLUDEPATH += $$PWD/../parsy
 DEPENDPATH += $$PWD/../parsy
 
+DEFINES += _CRT_SECURE_NO_WARNINGS
+
 TARGET = parsy-cli
 
 SOURCES += \

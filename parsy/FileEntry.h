@@ -4,18 +4,17 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include "DataPosition.h"
 #include "DllExports.h"
 
 union NumericValue
 {
-	NumericValue(uint64_t val)
+    NumericValue(uint64_t val) : U64(val)
 	{
-		U64 = val;
 	}
 
-	NumericValue()
+    NumericValue() : U64(0)
 	{
-		U64 = 0;
 	}
 
 	int64_t I64;
@@ -52,13 +51,13 @@ struct EntryValue
 class DLLEXPORT FileEntry
 {
 public:
-	FileEntry(std::string name);
+    FileEntry(std::string name, DataPosition pos);
 	// Generates a generic file entry of "type"
-	FileEntry(std::string name, EntryType type);
+    FileEntry(std::string name, DataPosition pos, EntryType type);
 	// Generates a string file entry with "name" and "value"
-	FileEntry(std::string name, std::string value);
+    FileEntry(std::string name, DataPosition pos, std::string value);
 	// Generates a numeric file entry with "name" and "value" and "type"
-	FileEntry(std::string name, uint64_t value, EntryType type);
+    FileEntry(std::string name, DataPosition pos, uint64_t value, EntryType type);
 
 	const std::string& GetName() const;
 	const EntryType GetType() const;
@@ -75,6 +74,7 @@ public:
 private:
 	std::string Name;
 	EntryValue Value;
+    DataPosition Position;
 };
 
 class FileData

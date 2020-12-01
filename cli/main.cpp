@@ -111,28 +111,34 @@ int main(int argc, char** argv)
     BitGrabber bg(Endianness::BigEndian);
     StringGrabber sg;
     FileData fd;
-    size_t i = 0;
-    auto ext = FileEntry("Extension", sg.GetString(buf, i));
+    uint32_t i = 0;
+    DataPosition pos = {4, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto ext = FileEntry("Extension", pos, sg.GetString(buf, i));
     fd.Entries.push_back(ext);
-    i += (strlen(buf + i) + 1) * BYTES_TO_BITS;
 
-    auto ver = FileEntry("Version", bg.GrabU32(buf, i, 4 * BYTES_TO_BITS), EntryType::Unsigned32);
+    i += (strlen(buf + i) + 1) * BYTES_TO_BITS;
+    pos = {i, DataLengthUnit::InBits, 4, DataLengthUnit::InBytes};
+    auto ver = FileEntry("Version", pos, bg.GrabU32(buf, pos), EntryType::Unsigned32);
     fd.Entries.push_back(ver);
     i += 4 * BYTES_TO_BITS;
 
-    auto cnt = FileEntry("FileCount", bg.GrabU8(buf, i, 5), EntryType::Unsigned8);
+    pos = {i, DataLengthUnit::InBits, 5, DataLengthUnit::InBits};
+    auto cnt = FileEntry("FileCount", pos, bg.GrabU8(buf, pos), EntryType::Unsigned8);
     fd.Entries.push_back(cnt);
     i += BYTES_TO_BITS;
 
-    auto fl1 = FileEntry("File1", sg.GetString(buf, i / BYTES_TO_BITS));
+    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto fl1 = FileEntry("File1", pos, sg.GetString(buf, i / BYTES_TO_BITS));
     fd.Entries.push_back(fl1);
     i += (fl1.GetStringValue().length() + 1) * BYTES_TO_BITS;
 
-    auto fl2 = FileEntry("File2", sg.GetString(buf, i / BYTES_TO_BITS));
+    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto fl2 = FileEntry("File2", pos, sg.GetString(buf, i / BYTES_TO_BITS));
     fd.Entries.push_back(fl2);
     i += (fl2.GetStringValue().length() + 1) * BYTES_TO_BITS;
 
-    auto fl3 = FileEntry("File3", sg.GetString(buf, i / BYTES_TO_BITS));
+    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+    auto fl3 = FileEntry("File3", pos, sg.GetString(buf, i / BYTES_TO_BITS));
     fd.Entries.push_back(fl3);
     i += (fl3.GetStringValue().length() + 1) * BYTES_TO_BITS;
 

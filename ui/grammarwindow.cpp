@@ -1,8 +1,10 @@
 #include "grammarwindow.h"
 #include "ui_grammarwindow.h"
+#include <QDataWidgetMapper>
 #include "FileEntryTableModel.h"
 
 static FileEntryTableModel FileEntriesModel;
+static QDataWidgetMapper *Mapper;
 
 GrammarWindow::GrammarWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,6 +15,11 @@ GrammarWindow::GrammarWindow(QWidget *parent) :
     // needed to reset stacked widget in case it is left on other pages
     // in edit mode
     ui->stackedWidget->setCurrentIndex(0);
+    Mapper = new QDataWidgetMapper(this);
+    Mapper->setOrientation(Qt::Horizontal);
+    Mapper->setModel(&FileEntriesModel);
+    Mapper->addMapping(ui->tbSelectedFieldName, 0);
+    Mapper->toFirst();
 }
 
 GrammarWindow::~GrammarWindow()
