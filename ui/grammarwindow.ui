@@ -15,6 +15,61 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_4">
+    <item row="1" column="0">
+     <widget class="QTableView" name="tvEntries">
+      <property name="font">
+       <font>
+        <family>Consolas</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="sizeAdjustPolicy">
+       <enum>QAbstractScrollArea::AdjustToContents</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="dragDropOverwriteMode">
+       <bool>false</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
+      </property>
+      <attribute name="horizontalHeaderMinimumSectionSize">
+       <number>36</number>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>true</bool>
+      </attribute>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="tbNewFieldName"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Enter new fields name:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QPushButton" name="btnNewField">
+        <property name="text">
+         <string>Add new field</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="1" rowspan="2">
      <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,1">
       <item row="5" column="1" colspan="3">
@@ -39,7 +94,47 @@
         </item>
         <item>
          <property name="text">
-          <string>Numeric</string>
+          <string>Pointer</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>INT64</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>INT32</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>INT16</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>INT8</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UINT64</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UINT32</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UINT16</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>UINT8</string>
          </property>
         </item>
        </widget>
@@ -56,7 +151,7 @@
          <enum>QFrame::Raised</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="String">
          <layout class="QGridLayout" name="gridLayout_2">
@@ -99,7 +194,7 @@
            </widget>
           </item>
           <item row="1" column="1" colspan="2">
-           <widget class="QLineEdit" name="tvStringOffset"/>
+           <widget class="QLineEdit" name="tbStringOffset"/>
           </item>
          </layout>
         </widget>
@@ -207,58 +302,6 @@
        </widget>
       </item>
      </layout>
-    </item>
-    <item row="0" column="0">
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="tbNewFieldName"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Enter new fields name:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="2">
-       <widget class="QPushButton" name="btnNewField">
-        <property name="text">
-         <string>Add new field</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="0">
-     <widget class="QTableView" name="tvEntries">
-      <property name="font">
-       <font>
-        <family>Consolas</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
-      </property>
-      <property name="editTriggers">
-       <set>QAbstractItemView::NoEditTriggers</set>
-      </property>
-      <property name="dragDropOverwriteMode">
-       <bool>false</bool>
-      </property>
-      <property name="selectionMode">
-       <enum>QAbstractItemView::SingleSelection</enum>
-      </property>
-      <property name="selectionBehavior">
-       <enum>QAbstractItemView::SelectRows</enum>
-      </property>
-      <property name="wordWrap">
-       <bool>false</bool>
-      </property>
-      <attribute name="horizontalHeaderStretchLastSection">
-       <bool>true</bool>
-      </attribute>
-     </widget>
     </item>
    </layout>
   </widget>

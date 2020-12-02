@@ -22,6 +22,8 @@ private slots:
 
     void on_tvEntries_clicked(const QModelIndex &index);
 
+    void on_btnUpdateField_clicked();
+
 private:
     Ui::GrammarWindow *ui;
 };

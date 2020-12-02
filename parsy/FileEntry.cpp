@@ -44,6 +44,11 @@ const std::string& FileEntry::GetStringValue() const
 	return Value.String;
 }
 
+const DataPosition& FileEntry::GetPosition() const
+{
+    return Position;
+}
+
 void FileEntry::SetName(std::string& name)
 {
 	Name = name;
@@ -82,4 +87,9 @@ void FileEntry::SetStringValue(std::string& str)
 void FileEntry::SetStringValue(const char* str)
 {
 	Value.String = str;
+}
+
+void FileEntry::SetPosition(DataPosition pos)
+{
+    Position = pos;
 }

@@ -63,6 +63,7 @@ public:
 	const EntryType GetType() const;
 	const NumericValue& GetNumericValue() const;
 	const std::string& GetStringValue() const;
+    const DataPosition& GetPosition() const;
 	void SetName(std::string& name);
 	void SetName(const char* name);
 	void SetType(EntryType type);
@@ -70,6 +71,7 @@ public:
 	void SetNumericValue(NumericValue num, EntryType type);
 	void SetStringValue(std::string& str);
 	void SetStringValue(const char* str);
+    void SetPosition(DataPosition pos);
 
 private:
 	std::string Name;
