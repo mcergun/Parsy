@@ -6,9 +6,9 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+//    MainWindow w;
+//    w.show();
     GrammarWindow gw;
-    w.show();
     gw.show();
     return a.exec();
 }
