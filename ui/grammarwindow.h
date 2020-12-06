@@ -25,6 +25,8 @@ private slots:
     void on_btnUpdateField_clicked();
 
 private:
+    void resetEntryFields();
+
     Ui::GrammarWindow *ui;
 };
 

@@ -241,22 +241,29 @@ bool FileEntryTableModel::setData(const QModelIndex &index, const QVariant &valu
 //    return Qt::NoItemFlags;
 //}
 
-void FileEntryTableModel::addNewItem(QString &name)
-{
-    DataPosition pos;
-    FileEntry fe(name.toStdString(), pos);
-    emit layoutAboutToBeChanged();
-    FileDataList.Entries.push_back(fe);
-    updateAllEntryValues();
-    emit layoutChanged();
-}
-
 void FileEntryTableModel::addNewItem(QString &name, QString &type, uint32_t offset, uint32_t length, int offsUnit, int lenUnit)
 {
     DataLengthUnit offsetUnit = static_cast<DataLengthUnit>(offsUnit);
     DataLengthUnit lengthUnit = static_cast<DataLengthUnit>(lenUnit);
     DataPosition pos(offset, offsetUnit, length, lengthUnit);
-    FileEntry fe(name.toStdString(), pos, StringToTypeMap.value(type));
+    EntryType typ = StringToTypeMap.value(type);
+    if (pos.GetOffset() == 0)
+    {
+        countIndex();
+        if (typ == EntryType::String)
+        {
+            // Need to align strings to a byte start
+            uint32_t bs = (CurrentBitIdx + BYTES_TO_BITS - 1) / BYTES_TO_BITS;
+            pos.SetOffset(bs);
+            pos.SetOffsetUnit(DataLengthUnit::InBytes);
+        }
+        else
+        {
+            pos.SetOffset(CurrentBitIdx);
+            pos.SetOffsetUnit(DataLengthUnit::InBits);
+        }
+    }
+    FileEntry fe(name.toStdString(), pos, typ);
     emit layoutAboutToBeChanged();
     FileDataList.Entries.push_back(fe);
     updateAllEntryValues();
@@ -287,35 +294,6 @@ void FileEntryTableModel::updateAllEntryValues()
             break;
         }
     }
-//    DataPosition pos = {4, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-//    auto ext = FileEntry("Extension", pos, sg.GetString(SourceBuffer, i));
-//    FileDataList.Entries.push_back(ext);
-
-//    i += (strlen(SourceBuffer + i) + 1) * BYTES_TO_BITS;
-//    pos = {i, DataLengthUnit::InBits, 4, DataLengthUnit::InBytes};
-//    auto ver = FileEntry("Version", pos, bg.GrabU32(SourceBuffer, pos), EntryType::Unsigned32);
-//    FileDataList.Entries.push_back(ver);
-//    i += 4 * BYTES_TO_BITS;
-
-//    pos = {i, DataLengthUnit::InBits, 5, DataLengthUnit::InBits};
-//    auto cnt = FileEntry("FileCount", pos, bg.GrabU8(SourceBuffer, pos), EntryType::Unsigned8);
-//    FileDataList.Entries.push_back(cnt);
-//    i += BYTES_TO_BITS;
-
-//    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-//    auto fl1 = FileEntry("File1", pos, sg.GetString(SourceBuffer, i / BYTES_TO_BITS));
-//    FileDataList.Entries.push_back(fl1);
-//    i += (fl1.GetStringValue().length() + 1) * BYTES_TO_BITS;
-
-//    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-//    auto fl2 = FileEntry("File2", pos, sg.GetString(SourceBuffer, i / BYTES_TO_BITS));
-//    FileDataList.Entries.push_back(fl2);
-//    i += (fl2.GetStringValue().length() + 1) * BYTES_TO_BITS;
-
-//    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-//    auto fl3 = FileEntry("File3", pos, sg.GetString(SourceBuffer, i / BYTES_TO_BITS));
-//    FileDataList.Entries.push_back(fl3);
-    //    i += (fl3.GetStringValue().length() + 1) * BYTES_TO_BITS;
 }
 
 void FileEntryTableModel::updateEntryValue(uint32_t idx)
@@ -451,5 +429,28 @@ void FileEntryTableModel::updateEntryValue(FileEntry &fe)
     default:
         fe.SetNumericValue(bg.GrabU64(SourceBuffer, pos), fe.GetType());
         break;
+    }
+}
+
+void FileEntryTableModel::countIndex()
+{
+    CurrentBitIdx = 0;
+    for (FileEntry &fe : FileDataList.Entries)
+    {
+        if (fe.GetType() == EntryType::String)
+        {
+            if (fe.GetPosition().GetSize() == 0)
+            {
+                CurrentBitIdx += (fe.GetStringValue().length() + 1) * BYTES_TO_BITS;
+            }
+            else
+            {
+                CurrentBitIdx += fe.GetPosition().GetSize(DataLengthUnit::InBits);
+            }
+        }
+        else
+        {
+            CurrentBitIdx += fe.GetPosition().GetSize(DataLengthUnit::InBits);
+        }
     }
 }

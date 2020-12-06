@@ -79,6 +79,7 @@ void GrammarWindow::on_btnNewField_clicked()
     int lenIdx = ui->cbEntryLengthUnit->currentIndex();
     FileEntriesModel->addNewItem(fname, ftype, offset, length, offsetIdx, lenIdx);
     Mapper->toLast();
+    resetEntryFields();
 }
 
 void GrammarWindow::on_tvEntries_clicked(const QModelIndex &index)
@@ -89,4 +90,15 @@ void GrammarWindow::on_tvEntries_clicked(const QModelIndex &index)
 void GrammarWindow::on_btnUpdateField_clicked()
 {
     Mapper->submit();
+}
+
+void GrammarWindow::resetEntryFields()
+{
+    ui->cbEntryOffsetUnit->setCurrentIndex(0);
+    ui->cbEntryLengthUnit->setCurrentIndex(0);
+    ui->cbEntryType->setCurrentIndex(0);
+    ui->cbStringType->setCurrentIndex(0);
+    ui->tbEntryName->setText("");
+    ui->tbEntryOffset->setText("");
+    ui->tbEntryLength->setText("");
 }

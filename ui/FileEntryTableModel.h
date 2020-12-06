@@ -44,11 +44,13 @@ private:
     QString getFileEntryLengthUnit(uint32_t idx) const;
 
     void updateEntryValue(FileEntry &fe);
+    void countIndex();
 
     FileData FileDataList;
     QMap<EntryType, QString> TypeToStringMap;
     QMap<QString, EntryType> StringToTypeMap;
     char *SourceBuffer;
+    uint32_t CurrentBitIdx = 0;
 };
 
 #endif // FILEENTRYTABLEMODEL_H
