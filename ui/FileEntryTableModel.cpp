@@ -182,14 +182,14 @@ bool FileEntryTableModel::setData(const QModelIndex &index, const QVariant &valu
             {
                 ret = true;
                 DataPosition pos = fe.GetPosition();
-                pos = {pos.GetPosition(), pos.GetPositionUnit(), pos.GetSize(), DataLengthUnit::InBits};
+                pos.SetSizeUnit(DataLengthUnit::InBits);
                 fe.SetPosition(pos);
             }
             else if (value == "Bytes")
             {
                 ret = true;
                 DataPosition pos = fe.GetPosition();
-                pos = {pos.GetPosition(), pos.GetPositionUnit(), pos.GetSize(), DataLengthUnit::InBytes};
+                pos.SetSizeUnit(DataLengthUnit::InBytes);
                 fe.SetPosition(pos);
             }
             // Else, no data to save
@@ -201,14 +201,14 @@ bool FileEntryTableModel::setData(const QModelIndex &index, const QVariant &valu
             {
                 ret = true;
                 DataPosition pos = fe.GetPosition();
-                pos = {pos.GetPosition(), DataLengthUnit::InBits, pos.GetSize(), pos.GetSizeUnit()};
+                pos.SetOffsetUnit(DataLengthUnit::InBits);
                 fe.SetPosition(pos);
             }
             else if (value == "Bytes")
             {
                 ret = true;
                 DataPosition pos = fe.GetPosition();
-                pos = {pos.GetPosition(), DataLengthUnit::InBytes, pos.GetSize(), pos.GetSizeUnit()};
+                pos.SetOffsetUnit(DataLengthUnit::InBytes);
                 fe.SetPosition(pos);
             }
             // Else, no data to save
@@ -222,7 +222,7 @@ bool FileEntryTableModel::setData(const QModelIndex &index, const QVariant &valu
             {
                 ret = true;
                 DataPosition pos = fe.GetPosition();
-                pos = {pos.GetPosition(), pos.GetPositionUnit(), newLen, pos.GetSizeUnit()};
+                pos.SetSize(newLen);
                 fe.SetPosition(pos);
             }
             break;
@@ -235,7 +235,7 @@ bool FileEntryTableModel::setData(const QModelIndex &index, const QVariant &valu
             {
                 ret = true;
                 DataPosition pos = fe.GetPosition();
-                pos = {newOffset, pos.GetPositionUnit(), pos.GetSize(), pos.GetSizeUnit()};
+                pos.SetOffset(newOffset);
                 fe.SetPosition(pos);
             }
             break;
@@ -339,7 +339,7 @@ QString FileEntryTableModel::getFileEntryOffset(uint32_t idx) const
     QString ret;
     if (idx < FileDataList.Entries.size())
     {
-        ret = QStringLiteral("%1").arg(FileDataList.Entries[idx].GetPosition().GetPosition());
+        ret = QStringLiteral("%1").arg(FileDataList.Entries[idx].GetPosition().GetOffset());
     }
     return ret;
 }
@@ -360,7 +360,7 @@ QString FileEntryTableModel::getFileEntryOffsetUnit(uint32_t idx) const
     if (idx < FileDataList.Entries.size())
     {
         DataPosition pos = FileDataList.Entries[idx].GetPosition();
-        ret += pos.GetPositionUnit() == DataLengthUnit::InBits ? "Bits" : "Bytes";
+        ret += pos.GetOffsetUnit() == DataLengthUnit::InBits ? "Bits" : "Bytes";
     }
     return ret;
 }

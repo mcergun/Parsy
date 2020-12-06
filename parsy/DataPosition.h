@@ -18,16 +18,21 @@ public:
     DataPosition(uint32_t pos, DataLengthUnit posUnit, uint32_t size, DataLengthUnit sizeUnit);
     DataPosition(uint32_t pos, uint32_t size, DataLengthUnit commonUnit);
     DataPosition();
-    uint32_t GetPosition(DataLengthUnit unit) const;
-    uint32_t GetSize(DataLengthUnit unit) const;
-    uint32_t GetPosition() const;
-    uint32_t GetSize() const;
-    DataLengthUnit GetPositionUnit() const;
+    DataLengthUnit GetOffsetUnit() const;
+    uint32_t GetOffset(DataLengthUnit unit) const;
+    uint32_t GetOffset() const;
     DataLengthUnit GetSizeUnit() const;
+    uint32_t GetSize(DataLengthUnit unit) const;
+    uint32_t GetSize() const;
+
+    void SetOffsetUnit(DataLengthUnit unit);
+    void SetOffset(uint32_t offset);
+    void SetSizeUnit(DataLengthUnit unit);
+    void SetSize(uint32_t size);
 
 private:
-    uint32_t Position;
-    DataLengthUnit PositionUnit;
+    uint32_t Offset;
+    DataLengthUnit OffsetUnit;
     uint32_t Size;
     DataLengthUnit SizeUnit;
 };

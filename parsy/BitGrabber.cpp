@@ -82,35 +82,35 @@ void BitGrabber::GrabBuf(char *dstBuf, const char *srcBuf, uint32_t offset, uint
 uint64_t BitGrabber::GrabU64(const char* srcBuf, DataPosition pos)
 {
     return GrabU64(srcBuf,
-                   pos.GetPosition(DataLengthUnit::InBits),
+                   pos.GetOffset(DataLengthUnit::InBits),
                    pos.GetSize(DataLengthUnit::InBits));
 }
 
 uint32_t BitGrabber::GrabU32(const char* srcBuf, DataPosition pos)
 {
     return GrabU32(srcBuf,
-                   pos.GetPosition(DataLengthUnit::InBits),
+                   pos.GetOffset(DataLengthUnit::InBits),
                    pos.GetSize(DataLengthUnit::InBits));
 }
 
 uint16_t BitGrabber::GrabU16(const char* srcBuf, DataPosition pos)
 {
     return GrabU16(srcBuf,
-                   pos.GetPosition(DataLengthUnit::InBits),
+                   pos.GetOffset(DataLengthUnit::InBits),
                    pos.GetSize(DataLengthUnit::InBits));
 }
 
 uint8_t BitGrabber::GrabU8(const char *srcBuf, DataPosition pos)
 {
     return GrabU8(srcBuf,
-                  pos.GetPosition(DataLengthUnit::InBits),
+                  pos.GetOffset(DataLengthUnit::InBits),
                   pos.GetSize(DataLengthUnit::InBits));
 }
 
 void BitGrabber::GrabBuf(char *dstBuf, const char *srcBuf, DataPosition pos)
 {
     const uint32_t count = pos.GetSize(DataLengthUnit::InBits);
-    const uint32_t offset = pos.GetPosition(DataLengthUnit::InBits);
+    const uint32_t offset = pos.GetOffset(DataLengthUnit::InBits);
     GrabBuf(dstBuf, srcBuf, offset, count);
 }
 

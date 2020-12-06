@@ -1,39 +1,54 @@
 #include "DataPosition.h"
 
 DataPosition::DataPosition(uint32_t pos, DataLengthUnit posUnit, uint32_t size, DataLengthUnit sizeUnit) :
-    Position(pos), PositionUnit(posUnit), Size(size), SizeUnit(sizeUnit)
+    Offset(pos), OffsetUnit(posUnit), Size(size), SizeUnit(sizeUnit)
 {
 }
 
 DataPosition::DataPosition(uint32_t pos, uint32_t size, DataLengthUnit commonUnit) :
-    Position(pos), PositionUnit(commonUnit), Size(size), SizeUnit(commonUnit)
+    Offset(pos), OffsetUnit(commonUnit), Size(size), SizeUnit(commonUnit)
 {
 }
 
 DataPosition::DataPosition() :
-    Position(0), PositionUnit(DataLengthUnit::InBytes), Size(0), SizeUnit(DataLengthUnit::InBytes)
+    Offset(0), OffsetUnit(DataLengthUnit::InBytes), Size(0), SizeUnit(DataLengthUnit::InBytes)
 {
 }
 
-uint32_t DataPosition::GetPosition(DataLengthUnit unit) const
+DataLengthUnit DataPosition::GetOffsetUnit() const
+{
+    return OffsetUnit;
+}
+
+uint32_t DataPosition::GetOffset(DataLengthUnit unit) const
 {
     uint32_t ret = 0;
-    if (unit == PositionUnit)
+    if (unit == OffsetUnit)
     {
-        ret = Position;
+        ret = Offset;
     }
     else
     {
         if (unit == DataLengthUnit::InBits)
         {
-            ret = Position * BYTES_TO_BITS;
+            ret = Offset * BYTES_TO_BITS;
         }
         else
         {
-            ret = Position / BYTES_TO_BITS;
+            ret = Offset / BYTES_TO_BITS;
         }
     }
     return ret;
+}
+
+uint32_t DataPosition::GetOffset() const
+{
+    return Offset;
+}
+
+DataLengthUnit DataPosition::GetSizeUnit() const
+{
+    return SizeUnit;
 }
 
 uint32_t DataPosition::GetSize(DataLengthUnit unit) const
@@ -57,23 +72,27 @@ uint32_t DataPosition::GetSize(DataLengthUnit unit) const
     return ret;
 }
 
-
-uint32_t DataPosition::GetPosition() const
-{
-    return Position;
-}
-
 uint32_t DataPosition::GetSize() const
 {
     return Size;
 }
 
-DataLengthUnit DataPosition::GetPositionUnit() const
+void DataPosition::SetOffsetUnit(DataLengthUnit unit)
 {
-    return PositionUnit;
+    OffsetUnit = unit;
 }
 
-DataLengthUnit DataPosition::GetSizeUnit() const
+void DataPosition::SetOffset(uint32_t offset)
 {
-    return SizeUnit;
+    Offset = offset;
+}
+
+void DataPosition::SetSizeUnit(DataLengthUnit unit)
+{
+    SizeUnit = unit;
+}
+
+void DataPosition::SetSize(uint32_t size)
+{
+    Size = size;
 }
