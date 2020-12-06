@@ -28,7 +28,11 @@ public:
 //    Qt::ItemFlags flags(const QModelIndex &index) const override;
 
     void addNewItem(QString &name);
+    void addNewItem(QString &name, QString &type, uint32_t offset, uint32_t length, int offsUnit, int lenUnit);
     void removeItem(int row);
+    void setSourceBuffer(char *buf);
+    void updateAllEntryValues();
+    void updateEntryValue(uint32_t idx);
 
 private:
     QString getFileEntryValue(uint32_t idx) const;
@@ -39,9 +43,12 @@ private:
     QString getFileEntryOffsetUnit(uint32_t idx) const;
     QString getFileEntryLengthUnit(uint32_t idx) const;
 
+    void updateEntryValue(FileEntry &fe);
+
     FileData FileDataList;
     QMap<EntryType, QString> TypeToStringMap;
     QMap<QString, EntryType> StringToTypeMap;
+    char *SourceBuffer;
 };
 
 #endif // FILEENTRYTABLEMODEL_H

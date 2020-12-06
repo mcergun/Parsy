@@ -37,39 +37,9 @@ FileEntryTableModel::FileEntryTableModel(QObject *parent)
 {
     Q_UNUSED(parent);
 
-    BitGrabber bg(Endianness::BigEndian);
-    StringGrabber sg;
-    uint32_t i = 0;
-    char *buf = FillTheFile();
-    DataPosition pos = {4, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-    auto ext = FileEntry("Extension", pos, sg.GetString(buf, i));
-    FileDataList.Entries.push_back(ext);
-
-    i += (strlen(buf + i) + 1) * BYTES_TO_BITS;
-    pos = {i, DataLengthUnit::InBits, 4, DataLengthUnit::InBytes};
-    auto ver = FileEntry("Version", pos, bg.GrabU32(buf, pos), EntryType::Unsigned32);
-    FileDataList.Entries.push_back(ver);
-    i += 4 * BYTES_TO_BITS;
-
-    pos = {i, DataLengthUnit::InBits, 5, DataLengthUnit::InBits};
-    auto cnt = FileEntry("FileCount", pos, bg.GrabU8(buf, pos), EntryType::Unsigned8);
-    FileDataList.Entries.push_back(cnt);
-    i += BYTES_TO_BITS;
-
-    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-    auto fl1 = FileEntry("File1", pos, sg.GetString(buf, i / BYTES_TO_BITS));
-    FileDataList.Entries.push_back(fl1);
-    i += (fl1.GetStringValue().length() + 1) * BYTES_TO_BITS;
-
-    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-    auto fl2 = FileEntry("File2", pos, sg.GetString(buf, i / BYTES_TO_BITS));
-    FileDataList.Entries.push_back(fl2);
-    i += (fl2.GetStringValue().length() + 1) * BYTES_TO_BITS;
-
-    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
-    auto fl3 = FileEntry("File3", pos, sg.GetString(buf, i / BYTES_TO_BITS));
-    FileDataList.Entries.push_back(fl3);
-    i += (fl3.GetStringValue().length() + 1) * BYTES_TO_BITS;
+    // TODO: Remove this later and use actual file buffers
+    SourceBuffer = FillTheFile();
+    updateAllEntryValues();
 
     TypeToStringMap.insert(EntryType::Pointer,      "Pointer");
     TypeToStringMap.insert(EntryType::Signed16,     "INT16");
@@ -277,7 +247,84 @@ void FileEntryTableModel::addNewItem(QString &name)
     FileEntry fe(name.toStdString(), pos);
     emit layoutAboutToBeChanged();
     FileDataList.Entries.push_back(fe);
+    updateAllEntryValues();
     emit layoutChanged();
+}
+
+void FileEntryTableModel::addNewItem(QString &name, QString &type, uint32_t offset, uint32_t length, int offsUnit, int lenUnit)
+{
+    DataLengthUnit offsetUnit = static_cast<DataLengthUnit>(offsUnit);
+    DataLengthUnit lengthUnit = static_cast<DataLengthUnit>(lenUnit);
+    DataPosition pos(offset, offsetUnit, length, lengthUnit);
+    FileEntry fe(name.toStdString(), pos, StringToTypeMap.value(type));
+    emit layoutAboutToBeChanged();
+    FileDataList.Entries.push_back(fe);
+    updateAllEntryValues();
+    emit layoutChanged();
+}
+
+void FileEntryTableModel::setSourceBuffer(char *buf)
+{
+    SourceBuffer = buf;
+}
+
+void FileEntryTableModel::updateAllEntryValues()
+{
+    BitGrabber bg(Endianness::BigEndian);
+    StringGrabber sg;
+    uint32_t i = 0;
+    for (FileEntry &fe : FileDataList.Entries)
+    {
+        DataPosition pos = fe.GetPosition();
+        updateEntryValue(fe);
+        switch (fe.GetType())
+        {
+        case EntryType::String:
+            i += fe.GetStringValue().length() * BYTES_TO_BITS;
+            break;
+        default:
+            i += fe.GetPosition().GetSize(DataLengthUnit::InBits);
+            break;
+        }
+    }
+//    DataPosition pos = {4, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+//    auto ext = FileEntry("Extension", pos, sg.GetString(SourceBuffer, i));
+//    FileDataList.Entries.push_back(ext);
+
+//    i += (strlen(SourceBuffer + i) + 1) * BYTES_TO_BITS;
+//    pos = {i, DataLengthUnit::InBits, 4, DataLengthUnit::InBytes};
+//    auto ver = FileEntry("Version", pos, bg.GrabU32(SourceBuffer, pos), EntryType::Unsigned32);
+//    FileDataList.Entries.push_back(ver);
+//    i += 4 * BYTES_TO_BITS;
+
+//    pos = {i, DataLengthUnit::InBits, 5, DataLengthUnit::InBits};
+//    auto cnt = FileEntry("FileCount", pos, bg.GrabU8(SourceBuffer, pos), EntryType::Unsigned8);
+//    FileDataList.Entries.push_back(cnt);
+//    i += BYTES_TO_BITS;
+
+//    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+//    auto fl1 = FileEntry("File1", pos, sg.GetString(SourceBuffer, i / BYTES_TO_BITS));
+//    FileDataList.Entries.push_back(fl1);
+//    i += (fl1.GetStringValue().length() + 1) * BYTES_TO_BITS;
+
+//    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+//    auto fl2 = FileEntry("File2", pos, sg.GetString(SourceBuffer, i / BYTES_TO_BITS));
+//    FileDataList.Entries.push_back(fl2);
+//    i += (fl2.GetStringValue().length() + 1) * BYTES_TO_BITS;
+
+//    pos = {i / BYTES_TO_BITS, DataLengthUnit::InBytes, 0, DataLengthUnit::InBytes};
+//    auto fl3 = FileEntry("File3", pos, sg.GetString(SourceBuffer, i / BYTES_TO_BITS));
+//    FileDataList.Entries.push_back(fl3);
+    //    i += (fl3.GetStringValue().length() + 1) * BYTES_TO_BITS;
+}
+
+void FileEntryTableModel::updateEntryValue(uint32_t idx)
+{
+    if (idx < FileDataList.Entries.size())
+    {
+        FileEntry &fe = FileDataList.Entries[idx];
+        updateEntryValue(fe);
+    }
 }
 
 QString FileEntryTableModel::getFileEntryValue(uint32_t idx) const
@@ -374,4 +421,35 @@ QString FileEntryTableModel::getFileEntryLengthUnit(uint32_t idx) const
         ret += pos.GetSizeUnit() == DataLengthUnit::InBits ? "Bits" : "Bytes";
     }
     return ret;
+}
+
+void FileEntryTableModel::updateEntryValue(FileEntry &fe)
+{
+    StringGrabber sg;
+    BitGrabber bg(Endianness::BigEndian);
+    DataPosition pos = fe.GetPosition();
+    switch (fe.GetType())
+    {
+    case EntryType::String:
+        fe.SetStringValue(sg.GetString(SourceBuffer, pos.GetOffset(DataLengthUnit::InBytes)));
+        break;
+    case EntryType::Unsigned8:
+    case EntryType::Signed8:
+        fe.SetNumericValue(bg.GrabU8(SourceBuffer, pos), fe.GetType());
+        break;
+    case EntryType::Unsigned16:
+    case EntryType::Signed16:
+        fe.SetNumericValue(bg.GrabU16(SourceBuffer, pos), fe.GetType());
+        break;
+    case EntryType::Unsigned32:
+    case EntryType::Signed32:
+        fe.SetNumericValue(bg.GrabU32(SourceBuffer, pos), fe.GetType());
+        break;
+    case EntryType::Unsigned64:
+    case EntryType::Signed64:
+    case EntryType::Pointer:
+    default:
+        fe.SetNumericValue(bg.GrabU64(SourceBuffer, pos), fe.GetType());
+        break;
+    }
 }
