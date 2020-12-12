@@ -14,8 +14,8 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_4">
-    <item row="1" column="0">
+   <layout class="QGridLayout" name="gridLayout_3" columnstretch="3,1">
+    <item row="0" column="0">
      <widget class="QTableView" name="tvEntries">
       <property name="font">
        <font>
@@ -49,19 +49,12 @@
       </attribute>
      </widget>
     </item>
-    <item row="0" column="1" rowspan="2">
-     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+    <item row="0" column="1">
+     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
       <item row="8" column="1" colspan="3">
        <widget class="QPushButton" name="btnNewField">
         <property name="text">
          <string>Add new field</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="2" colspan="2">
-       <widget class="QPushButton" name="btnUpdateField">
-        <property name="text">
-         <string>Update Field</string>
         </property>
        </widget>
       </item>
@@ -72,12 +65,22 @@
         </property>
        </widget>
       </item>
+      <item row="7" column="2" colspan="2">
+       <widget class="QPushButton" name="btnUpdateField">
+        <property name="text">
+         <string>Update Field</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1" colspan="3">
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
          <string>Field Properties</string>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMinimumSize</enum>
+         </property>
          <item row="2" column="2">
           <widget class="QComboBox" name="cbEntryOffsetUnit">
            <property name="enabled">
@@ -233,7 +236,7 @@
         </layout>
        </widget>
       </item>
-      <item row="18" column="1" colspan="3">
+      <item row="9" column="1" colspan="3">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>

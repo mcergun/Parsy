@@ -1,10 +1,12 @@
 #include "grammarwindow.h"
 #include "ui_grammarwindow.h"
 #include <QDataWidgetMapper>
+#include "hexviewer.h"
 #include "FileEntryTableModel.h"
 
 static FileEntryTableModel *FileEntriesModel = nullptr;
 static QDataWidgetMapper *Mapper = nullptr;
+static HexViewer *HexView = nullptr;
 
 GrammarWindow::GrammarWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,6 +15,7 @@ GrammarWindow::GrammarWindow(QWidget *parent) :
     ui->setupUi(this);
     Mapper = new QDataWidgetMapper(this);
     FileEntriesModel = new FileEntryTableModel(this);
+    HexView =  new HexViewer(this);
     Mapper->setOrientation(Qt::Horizontal);
     Mapper->setModel(FileEntriesModel);
     Mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
@@ -31,6 +34,13 @@ GrammarWindow::GrammarWindow(QWidget *parent) :
     ui->tvEntries->setColumnHidden(FILE_ENTRY_LENGTH_UNIT_COLUMN, true);
     ui->tvEntries->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tvEntries->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+    ui->centralwidget->layout()->addWidget(HexView);
+
+    char *buf;
+    uint32_t buflen;
+    FileEntriesModel->getBufferAndLen(&buf, &buflen);
+    HexView->setText(buf, buflen);
 }
 
 GrammarWindow::~GrammarWindow()

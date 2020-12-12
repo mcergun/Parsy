@@ -20,14 +20,17 @@ DEFINES += _CRT_SECURE_NO_WARNINGS
 SOURCES += \
     FileEntryTableModel.cpp \
     grammarwindow.cpp \
+    hexviewer.cpp \
     main.cpp
 
 HEADERS += \
     FileEntryTableModel.h \
-    grammarwindow.h
+    grammarwindow.h \
+    hexviewer.h
 
 FORMS += \
-    grammarwindow.ui
+    grammarwindow.ui \
+    hexviewer.ui
 
 TRANSLATIONS += \
     ui_tr_TR.ts

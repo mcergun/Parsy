@@ -39,6 +39,7 @@ FileEntryTableModel::FileEntryTableModel(QObject *parent)
 
     // TODO: Remove this later and use actual file buffers
     SourceBuffer = FillTheFile();
+    BufLen = 25;
     updateAllEntryValues();
 
     TypeToStringMap.insert(EntryType::Pointer,      "Pointer");
@@ -303,6 +304,12 @@ void FileEntryTableModel::updateEntryValue(uint32_t idx)
         FileEntry &fe = FileDataList.Entries[idx];
         updateEntryValue(fe);
     }
+}
+
+void FileEntryTableModel::getBufferAndLen(char **buf, uint32_t *len)
+{
+    *buf = SourceBuffer;
+    *len = BufLen;
 }
 
 QString FileEntryTableModel::getFileEntryValue(uint32_t idx) const

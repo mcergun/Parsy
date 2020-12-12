@@ -34,6 +34,8 @@ public:
     void updateAllEntryValues();
     void updateEntryValue(uint32_t idx);
 
+    void getBufferAndLen(char **buf, uint32_t *len);
+
 private:
     QString getFileEntryValue(uint32_t idx) const;
     QString getFileEntryType(uint32_t idx) const;
@@ -49,8 +51,9 @@ private:
     FileData FileDataList;
     QMap<EntryType, QString> TypeToStringMap;
     QMap<QString, EntryType> StringToTypeMap;
-    char *SourceBuffer;
+    char *SourceBuffer = nullptr;
     uint32_t CurrentBitIdx = 0;
+    uint32_t BufLen = 0;
 };
 
 #endif // FILEENTRYTABLEMODEL_H
