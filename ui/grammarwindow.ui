@@ -50,15 +50,190 @@
      </widget>
     </item>
     <item row="0" column="1" rowspan="2">
-     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
-      <item row="10" column="1">
+     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+      <item row="8" column="1" colspan="3">
+       <widget class="QPushButton" name="btnNewField">
+        <property name="text">
+         <string>Add new field</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2" colspan="2">
+       <widget class="QPushButton" name="btnUpdateField">
+        <property name="text">
+         <string>Update Field</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
        <widget class="QPushButton" name="btnRemoveField">
         <property name="text">
          <string>Remove Field</string>
         </property>
        </widget>
       </item>
-      <item row="21" column="1" colspan="3">
+      <item row="0" column="1" colspan="3">
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Field Properties</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="2" column="2">
+          <widget class="QComboBox" name="cbEntryOffsetUnit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Bits</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Bytes</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="lblOffset">
+           <property name="text">
+            <string>Data Offset:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2">
+          <widget class="QLineEdit" name="tbEntryName"/>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_9">
+           <property name="text">
+            <string>Field Name:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="lblLength">
+           <property name="text">
+            <string>Data Length:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QComboBox" name="cbEntryLengthUnit">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="currentIndex">
+            <number>1</number>
+           </property>
+           <item>
+            <property name="text">
+             <string>Bits</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Bytes</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QLineEdit" name="tbEntryLength"/>
+         </item>
+         <item row="2" column="1">
+          <widget class="QLineEdit" name="tbEntryOffset"/>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Data Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" colspan="2">
+          <widget class="QComboBox" name="cbEntryType">
+           <item>
+            <property name="text">
+             <string>String</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Pointer</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>INT64</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>INT32</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>INT16</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>INT8</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>UINT64</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>UINT32</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>UINT16</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>UINT8</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="lblDispType">
+           <property name="text">
+            <string>String Type:</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" colspan="2">
+          <widget class="QComboBox" name="cbStringType">
+           <item>
+            <property name="text">
+             <string>Null Terminated</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Static Length</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="18" column="1" colspan="3">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -70,200 +245,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="9" column="1" colspan="3">
-       <widget class="Line" name="line_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="3">
-       <widget class="QComboBox" name="cbEntryLengthUnit">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>Bits</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bytes</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="7" column="2">
-       <widget class="QLineEdit" name="tbEntryLength"/>
-      </item>
-      <item row="8" column="2" colspan="2">
-       <widget class="QComboBox" name="cbStringType">
-        <item>
-         <property name="text">
-          <string>Null Terminated</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Static Length</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="3">
-       <widget class="Line" name="line">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2" colspan="2">
-       <widget class="QLineEdit" name="tbEntryName"/>
-      </item>
-      <item row="3" column="1">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Data Type:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>Field Name:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QLabel" name="label_2">
-        <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;Field Properties&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="2" colspan="2">
-       <widget class="QPushButton" name="btnUpdateField">
-        <property name="text">
-         <string>Update Field</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="1" colspan="3">
-       <widget class="QPushButton" name="btnNewField">
-        <property name="text">
-         <string>Add new field</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="2" colspan="2">
-       <widget class="QComboBox" name="cbEntryType">
-        <item>
-         <property name="text">
-          <string>String</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Pointer</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>INT64</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>INT32</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>INT16</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>INT8</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>UINT64</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>UINT32</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>UINT16</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>UINT8</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="6" column="2">
-       <widget class="QLineEdit" name="tbEntryOffset"/>
-      </item>
-      <item row="8" column="1">
-       <widget class="QLabel" name="lblDispType">
-        <property name="text">
-         <string>String Type:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="3">
-       <widget class="QComboBox" name="cbEntryOffsetUnit">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
-        <item>
-         <property name="text">
-          <string>Bits</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Bytes</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QLabel" name="lblOffset">
-        <property name="text">
-         <string>Data Offset:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="1">
-       <widget class="QLabel" name="lblLength">
-        <property name="text">
-         <string>Data Length:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="3">
-       <widget class="Line" name="line_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
       </item>
      </layout>
     </item>
